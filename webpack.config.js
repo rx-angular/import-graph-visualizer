@@ -1,11 +1,11 @@
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: {
-    app: './src/app/index.tsx',
-    cli: './src/cli/index.ts',
-  },
+  entry: './src/app/index.tsx',
   output: {
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'dist/app'),
     clean: true,
   },
   devtool: 'inline-source-map',
@@ -26,7 +26,6 @@ module.exports = {
       template: __dirname + '/src/app/index.html',
       filename: 'index.html',
       inject: 'body',
-      excludeChunks: ['cli'],
     }),
   ],
 };
