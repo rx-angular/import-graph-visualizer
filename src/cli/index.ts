@@ -43,9 +43,18 @@ const options: ICruiseOptions = {
   tsPreCompilationDeps: true,
 };
 
-const reporterOutput = cruise(entryPoints, { options } as any, null, tsConfig);
+const { output } = cruise(
+  entryPoints,
+  {
+    ruleSet: {
+      options: { ...options, tsConfig: { fileName: tsConfigFileName } },
+    },
+  } as any,
+  null,
+  tsConfig,
+);
 
 fs.writeFileSync(
   path.resolve(__dirname, 'reporter-output.json'),
-  JSON.stringify(reporterOutput),
+  JSON.stringify(output),
 );
