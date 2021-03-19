@@ -1,6 +1,7 @@
 import { ICruiseResult } from 'dependency-cruiser';
 import React, { FC, useEffect, useState } from 'react';
 import { parseModules } from '../utils/parsers';
+import SelectModules from './SelectModules';
 
 const JSON_URL =
   process.env.NODE_ENV === 'production'
@@ -22,22 +23,11 @@ const App: FC = () => {
   }
 
   const modules = parseModules(data);
+
   return (
     <div>
-      <h1>Modules</h1>
-      <ul>
-        {modules?.map(({ path, isLocal, alias }) => (
-          <li key={path}>
-            {!isLocal ? (
-              <em>{path}</em>
-            ) : alias ? (
-              `${path} (aka ${alias})`
-            ) : (
-              path
-            )}
-          </li>
-        ))}
-      </ul>
+      <SelectModules modules={modules} label="Root module(s)" />
+      <SelectModules modules={modules} label="Leaf module(s)" />
     </div>
   );
 };

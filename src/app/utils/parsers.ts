@@ -33,5 +33,10 @@ export function parseModules(result: ICruiseResult): Module[] {
       };
     },
   );
-  return modules.sort((a, b) => a.path.localeCompare(b.path));
+  return modules
+    .filter(
+      (item, index, array) =>
+        array.findIndex(({ path }) => path === item.path) === index,
+    )
+    .sort((a, b) => a.path.localeCompare(b.path));
 }
