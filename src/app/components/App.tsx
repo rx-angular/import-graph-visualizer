@@ -1,6 +1,8 @@
 import { ICruiseResult } from 'dependency-cruiser';
 import React, { FC, useEffect, useState } from 'react';
-import { parseModules } from '../utils/parsers';
+import { getModules } from '../utils/deps';
+import { parseModuleDeps } from '../utils/parsers';
+import DepGraph from './DepGraph';
 import SelectModules from './SelectModules';
 
 const JSON_URL =
@@ -22,12 +24,14 @@ const App: FC = () => {
     return <em>Loading...</em>;
   }
 
-  const modules = parseModules(data);
+  const moduleDeps = parseModuleDeps(data);
+  const modules = getModules(moduleDeps);
 
   return (
     <div>
       <SelectModules modules={modules} label="Root module(s)" />
       <SelectModules modules={modules} label="Leaf module(s)" />
+      <DepGraph />
     </div>
   );
 };

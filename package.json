@@ -39,6 +39,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "typescript": "^4.2.3",
+    "vis-network": "^9.0.4",
     "yargs": "^16.2.0"
   }
 }
