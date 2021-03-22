@@ -11,10 +11,11 @@ import { Module } from '../utils/types';
 type Props = {
   modules: Module[];
   label: string;
+  value?: Module[];
   onChange?: (modules: Module[]) => void;
 };
 
-const SelectModules: FC<Props> = ({ modules, label, onChange }) => {
+const SelectModules: FC<Props> = ({ modules, label, value, onChange }) => {
   const filterOptions = (
     options: Module[],
     { inputValue }: FilterOptionsState<Module>,
@@ -36,6 +37,7 @@ const SelectModules: FC<Props> = ({ modules, label, onChange }) => {
     <Autocomplete
       multiple
       options={modules}
+      value={value}
       getOptionLabel={getOptionLabel}
       renderInput={renderInput}
       filterOptions={filterOptions}

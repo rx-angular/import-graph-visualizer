@@ -1,13 +1,21 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { Edge, Network, Node } from 'vis-network/standalone';
-import { DepGraph } from '../utils/types';
+import { createDepGraph } from '../utils/deps';
+import { DepGraph, ModuleDeps } from '../utils/types';
 
 type Props = {
-  graph: DepGraph;
+  moduleDeps: ModuleDeps;
+  rootModules: string[];
+  leafModules: string[];
 };
 
-const DepGraph: FC<Props> = ({ graph }) => {
+const DepGraph: FC<Props> = ({ moduleDeps, rootModules, leafModules }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const graph = useMemo(
+    () => createDepGraph({ moduleDeps, rootModules, leafModules }),
+    [moduleDeps, rootModules, leafModules],
+  );
 
   useEffect(() => {
     if (containerRef.current) {

@@ -19,3 +19,8 @@ export type DepGraph = {
     isDynamic: boolean;
   }[];
 };
+
+export type Filters = {
+  rootModules: string[];
+  leafModules: string[];
+};

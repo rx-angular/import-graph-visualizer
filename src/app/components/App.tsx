@@ -1,10 +1,10 @@
+import { Container } from '@material-ui/core';
 import { ICruiseResult } from 'dependency-cruiser';
-import React, { FC, useEffect, useState } from 'react';
-import { createDepGraph, getModules } from '../utils/deps';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { useFilters } from '../hooks/filters';
 import { parseModuleDeps } from '../utils/parsers';
-import { Module } from '../utils/types';
+import ControlPanel from './ControlPanel';
 import DepGraph from './DepGraph';
-import SelectModules from './SelectModules';
 
 const JSON_URL =
   process.env.NODE_ENV === 'production'
@@ -12,9 +12,10 @@ const JSON_URL =
     : '../../../dist/cli/reporter-output.json';
 
 const App: FC = () => {
+  const [filters, setFilters] = useFilters();
   const [data, setData] = useState<ICruiseResult>();
-  const [rootModules, setRootModules] = useState<string[]>([]);
-  const [leafModules, setLeafModules] = useState<string[]>([]);
+
+  const moduleDeps = useMemo(() => data && parseModuleDeps(data), [data]);
 
   useEffect(() => {
     fetch(JSON_URL)
@@ -24,39 +25,23 @@ const App: FC = () => {
       });
   }, []);
 
-  if (data == null) {
+  if (moduleDeps == null) {
     return <em>Loading...</em>;
   }
 
-  const handleRootModulesChange = (modules: Module[]) => {
-    setRootModules(modules.map(({ path }) => path));
-  };
-  const handleLeafModulesChange = (modules: Module[]) => {
-    setLeafModules(modules.map(({ path }) => path));
-  };
-
-  const moduleDeps = parseModuleDeps(data);
-  const modules = getModules(moduleDeps);
-  const graph = createDepGraph({
-    moduleDeps,
-    rootModules,
-    leafModules,
-  });
-
   return (
-    <div>
-      <SelectModules
-        modules={modules}
-        label="Root module(s)"
-        onChange={handleRootModulesChange}
+    <Container fixed>
+      <ControlPanel
+        moduleDeps={moduleDeps}
+        filters={filters}
+        onSubmit={setFilters}
       />
-      <SelectModules
-        modules={modules}
-        label="Leaf module(s)"
-        onChange={handleLeafModulesChange}
+      <DepGraph
+        moduleDeps={moduleDeps}
+        rootModules={filters.rootModules}
+        leafModules={filters.leafModules}
       />
-      <DepGraph graph={graph} />
-    </div>
+    </Container>
   );
 };
 
