@@ -8,8 +8,14 @@ export type Module = {
 export type ModuleDeps = {
   modules: Record<string, Module>;
   paths: string[];
-  deps: Record<string, { path: string; isDynamic: boolean }[]>;
+  deps: ModuleImportMap;
+  importedBy: ModuleImportMap;
 };
+
+export type ModuleImportMap = Record<
+  string,
+  { path: string; isDynamic: boolean }[]
+>;
 
 export type DepGraph = {
   modules: Module[];
@@ -21,6 +27,6 @@ export type DepGraph = {
 };
 
 export type Filters = {
-  rootModules: string[];
-  leafModules: string[];
+  targetModules: string[];
+  sourceModules: string[];
 };

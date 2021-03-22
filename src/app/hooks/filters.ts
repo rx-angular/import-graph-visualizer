@@ -6,30 +6,30 @@ export function useFilters(): [
   setFilters: (filters: Filters) => void,
 ] {
   const [searchFilters, setSearchFilters] = useState<Filters>({
-    rootModules: [],
-    leafModules: [],
+    targetModules: [],
+    sourceModules: [],
   });
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     if (
-      searchParams.get('roots') !== searchFilters.rootModules.join(',') ||
-      searchParams.get('leaves') !== searchFilters.leafModules.join(',')
+      searchParams.get('tgt') !== searchFilters.targetModules.join(',') ||
+      searchParams.get('src') !== searchFilters.sourceModules.join(',')
     ) {
       setSearchFilters({
-        rootModules: searchParams.get('roots')?.split(',') ?? [],
-        leafModules: searchParams.get('leaves')?.split(',') ?? [],
+        targetModules: searchParams.get('tgt')?.split(',') ?? [],
+        sourceModules: searchParams.get('src')?.split(',') ?? [],
       });
     }
   }, []);
 
   const updateSearch = (filters: Filters) => {
     const searchParams = new URLSearchParams();
-    if (filters.rootModules.length > 0) {
-      searchParams.append('roots', filters.rootModules.join(','));
+    if (filters.targetModules.length > 0) {
+      searchParams.append('tgt', filters.targetModules.join(','));
     }
-    if (filters.leafModules.length > 0) {
-      searchParams.append('leaves', filters.leafModules.join(','));
+    if (filters.sourceModules.length > 0) {
+      searchParams.append('src', filters.sourceModules.join(','));
     }
     window.history.pushState(null, '', `?${searchParams.toString()}`);
     setSearchFilters(filters);

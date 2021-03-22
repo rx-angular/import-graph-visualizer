@@ -36,11 +36,7 @@ const App: FC = () => {
         filters={filters}
         onSubmit={setFilters}
       />
-      <DepGraph
-        moduleDeps={moduleDeps}
-        rootModules={filters.rootModules}
-        leafModules={filters.leafModules}
-      />
+      <DepGraph moduleDeps={moduleDeps} filters={filters} />
     </Container>
   );
 };

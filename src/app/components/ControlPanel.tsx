@@ -13,26 +13,30 @@ type Props = {
 const ControlPanel: FC<Props> = ({ moduleDeps, filters, onSubmit }) => {
   const modules = useMemo(() => getModules(moduleDeps), [moduleDeps]);
 
-  const [rootModules, setRootModules] = useState<string[]>(filters.rootModules);
-  const [leafModules, setLeafModules] = useState<string[]>(filters.leafModules);
-
-  const rootModulesValue = useMemo(
-    () => rootModules.map(path => moduleDeps.modules[path]),
-    [rootModules, moduleDeps],
+  const [targetModules, setTargetModules] = useState<string[]>(
+    filters.targetModules,
   );
-  const leafModulesValue = useMemo(
-    () => leafModules.map(path => moduleDeps.modules[path]),
-    [leafModules, moduleDeps],
+  const [sourceModules, setSourceModules] = useState<string[]>(
+    filters.sourceModules,
   );
 
-  const handleRootModulesChange = (modules: Module[]) => {
-    setRootModules(modules.map(({ path }) => path));
+  const targetModulesValue = useMemo(
+    () => targetModules.map(path => moduleDeps.modules[path]),
+    [targetModules, moduleDeps],
+  );
+  const sourceModulesValue = useMemo(
+    () => sourceModules.map(path => moduleDeps.modules[path]),
+    [sourceModules, moduleDeps],
+  );
+
+  const handleTargetModulesChange = (modules: Module[]) => {
+    setTargetModules(modules.map(({ path }) => path));
   };
-  const handleLeafModulesChange = (modules: Module[]) => {
-    setLeafModules(modules.map(({ path }) => path));
+  const handleSourceModulesChange = (modules: Module[]) => {
+    setSourceModules(modules.map(({ path }) => path));
   };
   const handleSubmit = () => {
-    onSubmit?.({ rootModules, leafModules });
+    onSubmit?.({ targetModules: targetModules, sourceModules: sourceModules });
   };
 
   return (
@@ -40,20 +44,20 @@ const ControlPanel: FC<Props> = ({ moduleDeps, filters, onSubmit }) => {
       <Grid item>
         <SelectModules
           modules={modules}
-          label="Root module(s)"
-          value={rootModulesValue}
-          onChange={handleRootModulesChange}
+          label="Import target(s)"
+          value={targetModulesValue}
+          onChange={handleTargetModulesChange}
         />
       </Grid>
       <Grid item>
         <SelectModules
           modules={modules}
-          label="Leaf module(s)"
-          value={leafModulesValue}
-          onChange={handleLeafModulesChange}
+          label="Import source(s)"
+          value={sourceModulesValue}
+          onChange={handleSourceModulesChange}
         />
       </Grid>
-      <Button onClick={handleSubmit}>Draw graph</Button>
+      <Button onClick={handleSubmit}>Render</Button>
     </Grid>
   );
 };

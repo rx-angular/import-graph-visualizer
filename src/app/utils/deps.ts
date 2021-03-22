@@ -6,46 +6,46 @@ export function getModules(moduleDeps: ModuleDeps): Module[] {
 
 export function createDepGraph(args: {
   moduleDeps: ModuleDeps;
-  rootModules: string[];
-  leafModules: string[];
+  sourceModules: string[];
+  targetModules: string[];
 }): DepGraph {
-  const { moduleDeps, rootModules, leafModules } = args;
+  const { moduleDeps, sourceModules, targetModules } = args;
 
   const result: DepGraph = {
     modules: [],
     imports: [],
   };
-  const leaves = new Set(leafModules);
-  const reachableLeaves = new Set<string>();
+  const roots = new Set(sourceModules);
+  const reachableRoots = new Set<string>();
 
-  const queue = [...rootModules];
-  const discovered = new Set([...leafModules, ...rootModules]);
+  const queue = [...targetModules];
+  const discovered = new Set([...targetModules, ...sourceModules]);
 
   while (queue.length > 0) {
-    const srcModulePath = queue.shift()!;
-    result.modules.push(moduleDeps.modules[srcModulePath]);
+    const tgtModulePath = queue.shift()!;
+    result.modules.push(moduleDeps.modules[tgtModulePath]);
 
-    const adjacent = moduleDeps.deps[srcModulePath] ?? [];
-    for (const { path: tgtModulePath, isDynamic } of adjacent) {
+    const adjacent = moduleDeps.importedBy[tgtModulePath] ?? [];
+    for (const { path: srcModulePath, isDynamic } of adjacent) {
       result.imports.push({
-        fromPath: srcModulePath,
-        toPath: tgtModulePath,
+        fromPath: tgtModulePath,
+        toPath: srcModulePath,
         isDynamic,
       });
 
-      if (leaves.has(tgtModulePath)) {
-        reachableLeaves.add(tgtModulePath);
+      if (roots.has(srcModulePath)) {
+        reachableRoots.add(srcModulePath);
       }
 
-      if (!discovered.has(tgtModulePath)) {
-        queue.push(tgtModulePath);
-        discovered.add(tgtModulePath);
+      if (!discovered.has(srcModulePath)) {
+        queue.push(srcModulePath);
+        discovered.add(srcModulePath);
       }
     }
   }
 
-  reachableLeaves.forEach(leafModule => {
-    result.modules.push(moduleDeps.modules[leafModule]);
+  reachableRoots.forEach(modulePath => {
+    result.modules.push(moduleDeps.modules[modulePath]);
   });
 
   return result;

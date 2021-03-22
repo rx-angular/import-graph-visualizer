@@ -1,5 +1,5 @@
 import { ICruiseResult } from 'dependency-cruiser';
-import { Module, ModuleDeps } from './types';
+import { Module, ModuleDeps, ModuleImportMap } from './types';
 
 export function parseModuleDeps(result: ICruiseResult): ModuleDeps {
   const localModules = new Map<string, boolean>();
@@ -9,12 +9,22 @@ export function parseModuleDeps(result: ICruiseResult): ModuleDeps {
     string,
     { source: string; isDynamic: boolean }[]
   >();
+  const sourceImportedBy = new Map<
+    string,
+    { source: string; isDynamic: boolean }[]
+  >();
+
   result.modules.forEach(module => {
     module.dependencies.forEach(dependency => {
       sourceDeps.set(module.source, [
         ...(sourceDeps.get(module.source) ?? []),
         { source: dependency.resolved, isDynamic: dependency.dynamic },
       ]);
+      sourceImportedBy.set(dependency.resolved, [
+        ...(sourceImportedBy.get(dependency.resolved) ?? []),
+        { source: module.source, isDynamic: dependency.dynamic },
+      ]);
+
       if (dependency.dependencyTypes.includes('local')) {
         localModules.set(dependency.resolved, true);
       }
@@ -60,17 +70,27 @@ export function parseModuleDeps(result: ICruiseResult): ModuleDeps {
     { moduleBySource: {}, moduleByPath: {} },
   );
 
-  const pathDeps: ModuleDeps['deps'] = {};
+  const pathDeps: ModuleImportMap = {};
   sourceDeps.forEach((value, key) => {
     pathDeps[moduleBySource[key].path] = value.map(({ source, isDynamic }) => ({
       path: moduleBySource[source].path,
       isDynamic,
     }));
   });
+  const pathImportedBy: ModuleImportMap = {};
+  sourceImportedBy.forEach((value, key) => {
+    pathImportedBy[moduleBySource[key].path] = value.map(
+      ({ source, isDynamic }) => ({
+        path: moduleBySource[source].path,
+        isDynamic,
+      }),
+    );
+  });
 
   return {
     modules: moduleByPath,
     paths: allModules.map(({ path }) => path),
     deps: pathDeps,
+    importedBy: pathImportedBy,
   };
 }

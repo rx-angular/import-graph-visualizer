@@ -1,20 +1,23 @@
 import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { Edge, Network, Node } from 'vis-network/standalone';
 import { createDepGraph } from '../utils/deps';
-import { DepGraph, ModuleDeps } from '../utils/types';
+import { DepGraph, Filters, ModuleDeps } from '../utils/types';
 
 type Props = {
   moduleDeps: ModuleDeps;
-  rootModules: string[];
-  leafModules: string[];
+  filters: Filters;
 };
 
-const DepGraph: FC<Props> = ({ moduleDeps, rootModules, leafModules }) => {
+const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const graph = useMemo(
-    () => createDepGraph({ moduleDeps, rootModules, leafModules }),
-    [moduleDeps, rootModules, leafModules],
+    () =>
+      createDepGraph({
+        moduleDeps,
+        ...filters,
+      }),
+    [moduleDeps, filters],
   );
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const DepGraph: FC<Props> = ({ moduleDeps, rootModules, leafModules }) => {
   return (
     <div
       ref={containerRef}
-      style={{ height: '50vh', width: '100%', border: '1px solid grey' }}
+      style={{ height: '70vh', width: '100%', border: '1px solid grey' }}
     ></div>
   );
 };
