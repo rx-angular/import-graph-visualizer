@@ -5,15 +5,16 @@ import {
   FilterOptionsState,
 } from '@material-ui/lab';
 import { matchSorter } from 'match-sorter';
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import { Module } from '../utils/types';
 
 type Props = {
   modules: Module[];
   label: string;
+  onChange?: (modules: Module[]) => void;
 };
 
-const SelectModules: FC<Props> = ({ modules, label }) => {
+const SelectModules: FC<Props> = ({ modules, label, onChange }) => {
   const filterOptions = (
     options: Module[],
     { inputValue }: FilterOptionsState<Module>,
@@ -25,6 +26,11 @@ const SelectModules: FC<Props> = ({ modules, label }) => {
   const renderInput = (params: AutocompleteRenderInputParams) => (
     <TextField {...params} label={label} variant="outlined" />
   );
+  const handleChange = (_: ChangeEvent<{}>, value: Module[]) => {
+    onChange?.(value);
+  };
+  const areModulesEqual = (option: Module, value: Module) =>
+    option.path === value.path;
 
   return (
     <Autocomplete
@@ -33,6 +39,8 @@ const SelectModules: FC<Props> = ({ modules, label }) => {
       getOptionLabel={getOptionLabel}
       renderInput={renderInput}
       filterOptions={filterOptions}
+      onChange={handleChange}
+      getOptionSelected={areModulesEqual}
     />
   );
 };

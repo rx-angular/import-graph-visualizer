@@ -5,12 +5,15 @@ export function parseModuleDeps(result: ICruiseResult): ModuleDeps {
   const localModules = new Map<string, boolean>();
   const aliases = new Map<string, string>();
   const npmPackageNames = new Map<string, string>();
-  const sourceDeps = new Map<string, string[]>();
+  const sourceDeps = new Map<
+    string,
+    { source: string; isDynamic: boolean }[]
+  >();
   result.modules.forEach(module => {
     module.dependencies.forEach(dependency => {
       sourceDeps.set(module.source, [
         ...(sourceDeps.get(module.source) ?? []),
-        dependency.resolved,
+        { source: dependency.resolved, isDynamic: dependency.dynamic },
       ]);
       if (dependency.dependencyTypes.includes('local')) {
         localModules.set(dependency.resolved, true);
@@ -57,11 +60,12 @@ export function parseModuleDeps(result: ICruiseResult): ModuleDeps {
     { moduleBySource: {}, moduleByPath: {} },
   );
 
-  const pathDeps: Record<string, string[]> = {};
+  const pathDeps: ModuleDeps['deps'] = {};
   sourceDeps.forEach((value, key) => {
-    pathDeps[moduleBySource[key].path] = value.map(
-      source => moduleBySource[source].path,
-    );
+    pathDeps[moduleBySource[key].path] = value.map(({ source, isDynamic }) => ({
+      path: moduleBySource[source].path,
+      isDynamic,
+    }));
   });
 
   return {
