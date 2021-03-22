@@ -2,7 +2,7 @@ import { ICruiseResult } from 'dependency-cruiser';
 import { Module, ModuleDeps, ModuleImportMap } from './types';
 
 export function parseModuleDeps(result: ICruiseResult): ModuleDeps {
-  const localModules = new Map<string, boolean>();
+  const localModules = new Set<string>();
   const aliases = new Map<string, string>();
   const npmPackageNames = new Map<string, string>();
   const sourceDeps = new Map<
@@ -13,6 +13,10 @@ export function parseModuleDeps(result: ICruiseResult): ModuleDeps {
     string,
     { source: string; isDynamic: boolean }[]
   >();
+
+  result.summary.optionsUsed.args?.split(/\s+/).forEach(entryPoint => {
+    localModules.add(entryPoint);
+  });
 
   result.modules.forEach(module => {
     module.dependencies.forEach(dependency => {
@@ -26,11 +30,11 @@ export function parseModuleDeps(result: ICruiseResult): ModuleDeps {
       ]);
 
       if (dependency.dependencyTypes.includes('local')) {
-        localModules.set(dependency.resolved, true);
+        localModules.add(dependency.resolved);
       }
       if (dependency.dependencyTypes.includes('aliased')) {
         aliases.set(dependency.resolved, dependency.module);
-        localModules.set(dependency.resolved, true);
+        localModules.add(dependency.resolved);
       } else if (
         dependency.dependencyTypes.some(type => type.startsWith('npm'))
       ) {
@@ -44,7 +48,7 @@ export function parseModuleDeps(result: ICruiseResult): ModuleDeps {
       (module): Module => {
         const npmPackageName = npmPackageNames.get(module.source);
         const alias = aliases.get(module.source);
-        const isLocal = localModules.get(module.source) ?? false;
+        const isLocal = localModules.has(module.source);
         return {
           path: npmPackageName ?? module.source,
           source: module.source,

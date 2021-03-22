@@ -28,8 +28,8 @@ export function createDepGraph(args: {
     const adjacent = moduleDeps.importedBy[tgtModulePath] ?? [];
     for (const { path: srcModulePath, isDynamic } of adjacent) {
       result.imports.push({
-        fromPath: tgtModulePath,
-        toPath: srcModulePath,
+        fromPath: srcModulePath,
+        toPath: tgtModulePath,
         isDynamic,
       });
 

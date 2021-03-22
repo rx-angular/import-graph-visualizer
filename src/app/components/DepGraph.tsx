@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { Edge, Network, Node } from 'vis-network/standalone';
 import { createDepGraph } from '../utils/deps';
+import { filenameFromPath } from '../utils/format';
 import { DepGraph, Filters, ModuleDeps } from '../utils/types';
 
 type Props = {
@@ -23,24 +24,30 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
   useEffect(() => {
     if (containerRef.current) {
       const nodes = graph.modules.map(
-        ({ path }): Node => ({ id: path, label: path }),
+        ({ path, isLocal }): Node => ({
+          id: path,
+          label: isLocal ? filenameFromPath(path) : path,
+          title: path,
+        }),
       );
 
       const edges = graph.imports.map(
-        ({ fromPath, toPath }): Edge => ({ from: fromPath, to: toPath }),
+        ({ fromPath, toPath, isDynamic }): Edge => ({
+          from: fromPath,
+          to: toPath,
+          dashes: isDynamic,
+        }),
       );
 
       const network = new Network(
         containerRef.current,
         { edges, nodes },
         {
+          nodes: {
+            shape: 'box',
+          },
           edges: {
             arrows: 'to',
-          },
-          layout: {
-            hierarchical: {
-              sortMethod: 'directed',
-            },
           },
         },
       );
