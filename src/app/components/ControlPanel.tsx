@@ -1,6 +1,6 @@
 import { Button, Grid } from '@material-ui/core';
 import React, { FC, useMemo, useState } from 'react';
-import { getModules } from '../utils/deps';
+import { getModules } from '../utils/graph';
 import { Filters, Module, ModuleDeps } from '../utils/types';
 import SelectModules from './SelectModules';
 

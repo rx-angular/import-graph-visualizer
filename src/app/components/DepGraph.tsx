@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { Edge, Network, Node } from 'vis-network/standalone';
-import { createDepGraph } from '../utils/deps';
 import { filenameFromPath } from '../utils/format';
+import { createDepGraph } from '../utils/graph';
 import { DepGraph, Filters, ModuleDeps } from '../utils/types';
 
 type Props = {
