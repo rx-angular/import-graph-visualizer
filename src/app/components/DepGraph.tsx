@@ -57,7 +57,13 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
   return (
     <div
       ref={containerRef}
-      style={{ height: '70vh', width: '100%', border: '1px solid grey' }}
+      style={{
+        height: 'calc(100vh - 310px)',
+        width: '100%',
+        border: '1px dotted grey',
+        borderRadius: 4,
+        marginTop: 15,
+      }}
     ></div>
   );
 };

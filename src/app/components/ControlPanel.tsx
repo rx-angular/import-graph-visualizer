@@ -1,4 +1,12 @@
-import { Button, Grid } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Container,
+  Grid,
+} from '@material-ui/core';
 import React, { FC, useMemo, useState } from 'react';
 import { getModules } from '../utils/graph';
 import { Filters, Module, ModuleDeps } from '../utils/types';
@@ -40,25 +48,43 @@ const ControlPanel: FC<Props> = ({ moduleDeps, filters, onSubmit }) => {
   };
 
   return (
-    <Grid container direction="column">
-      <Grid item>
-        <SelectModules
-          modules={modules}
-          label="Import target(s)"
-          value={targetModulesValue}
-          onChange={handleTargetModulesChange}
-        />
-      </Grid>
-      <Grid item>
-        <SelectModules
-          modules={modules}
-          label="Import source(s)"
-          value={sourceModulesValue}
-          onChange={handleSourceModulesChange}
-        />
-      </Grid>
-      <Button onClick={handleSubmit}>Render</Button>
-    </Grid>
+    <Card elevation={3}>
+      <CardHeader
+        title="Import Graph Visualizer"
+        titleTypographyProps={{ align: 'center' }}
+      />
+      <CardContent>
+        <Container fixed>
+          <Grid container direction="column" spacing={2}>
+            <Grid item>
+              <SelectModules
+                modules={modules}
+                label="Import target(s)"
+                value={targetModulesValue}
+                onChange={handleTargetModulesChange}
+              />
+            </Grid>
+            <Grid item>
+              <SelectModules
+                modules={modules}
+                label="Import source(s)"
+                value={sourceModulesValue}
+                onChange={handleSourceModulesChange}
+              />
+            </Grid>
+          </Grid>
+        </Container>
+      </CardContent>
+      <CardActions>
+        <Grid container justify="center">
+          <Grid item>
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
+              Render
+            </Button>
+          </Grid>
+        </Grid>
+      </CardActions>
+    </Card>
   );
 };
 

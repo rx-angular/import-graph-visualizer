@@ -1,4 +1,4 @@
-import { Container } from '@material-ui/core';
+import { LinearProgress } from '@material-ui/core';
 import { ICruiseResult } from 'dependency-cruiser';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useFilters } from '../hooks/filters';
@@ -26,18 +26,18 @@ const App: FC = () => {
   }, []);
 
   if (moduleDeps == null) {
-    return <em>Loading...</em>;
+    return <LinearProgress />;
   }
 
   return (
-    <Container fixed>
+    <>
       <ControlPanel
         moduleDeps={moduleDeps}
         filters={filters}
         onSubmit={setFilters}
       />
       <DepGraph moduleDeps={moduleDeps} filters={filters} />
-    </Container>
+    </>
   );
 };
 
