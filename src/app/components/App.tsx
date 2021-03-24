@@ -12,7 +12,6 @@ const JSON_URL =
     : '../../../dist/cli/reporter-output.json';
 
 const App: FC = () => {
-  const [filters, setFilters] = useFilters();
   const [data, setData] = useState<ICruiseResult>();
 
   const moduleDeps = useMemo(() => data && parseModuleDeps(data), [data]);
@@ -24,6 +23,8 @@ const App: FC = () => {
         setData(json);
       });
   }, []);
+
+  const [filters, setFilters] = useFilters();
 
   if (moduleDeps == null) {
     return <LinearProgress />;
