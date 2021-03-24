@@ -8,7 +8,7 @@ import {
   Grid,
 } from '@material-ui/core';
 import React, { FC, useMemo, useState } from 'react';
-import { getModules } from '../utils/graph';
+import { getModules } from '../utils/deps';
 import { Filters, Module, ModuleDeps } from '../utils/types';
 import SelectModules from './SelectModules';
 

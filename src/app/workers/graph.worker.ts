@@ -1,14 +1,18 @@
-import { DepGraph, Module, ModuleDeps } from './types';
+import { DepGraph, ModuleDeps } from '../utils/types';
 
-export function getModules(moduleDeps: ModuleDeps): Module[] {
-  return moduleDeps.paths.map(path => moduleDeps.modules[path]);
-}
+const ctx: Worker = self as any;
 
-export function createDepGraph(args: {
+type Args = {
   moduleDeps: ModuleDeps;
   sourceModules: string[];
   targetModules: string[];
-}): DepGraph {
+};
+
+ctx.addEventListener('message', (ev: MessageEvent<Args>) => {
+  ctx.postMessage(createDepGraph(ev.data));
+});
+
+function createDepGraph(args: Args): DepGraph {
   const { moduleDeps, sourceModules, targetModules } = args;
 
   const paths = findAllPaths(
@@ -44,11 +48,7 @@ export function createDepGraph(args: {
   };
 }
 
-function findAllPaths<T>(
-  from: T[],
-  to: T[],
-  adjacent: (vertex: T) => T[],
-): T[][] {
+function findAllPaths<T>(from: T[], to: T[], adjacent: (vertex: T) => T[]) {
   const ends = new Set(to);
   const isPathEnd = (vertex: T) => ends.has(vertex);
 
@@ -69,7 +69,7 @@ function findAllPathsUtil<T>(
   visited: Set<T>,
   path: T[],
   paths: T[][],
-): void {
+) {
   visited.add(vertex);
   path.push(vertex);
 

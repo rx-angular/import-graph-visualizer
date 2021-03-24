@@ -1,8 +1,8 @@
 import { Snackbar, SnackbarContent } from '@material-ui/core';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Edge, Network, Node } from 'vis-network/standalone';
+import Worker from 'worker-loader!../workers/graph.worker';
 import { filenameFromPath } from '../utils/format';
-import { createDepGraph } from '../utils/graph';
 import { DepGraph, Filters, ModuleDeps } from '../utils/types';
 
 type Props = {
@@ -21,11 +21,13 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
 
   useEffect(() => {
     setStage('computing');
-    setTimeout(() => {
-      const newGraph = createDepGraph({ moduleDeps, ...filters });
-      setGraph(newGraph);
+    const worker = new Worker();
+    worker.postMessage({ moduleDeps, ...filters });
+    worker.onmessage = ({ data }: MessageEvent<DepGraph>) => {
+      setGraph(data);
       setStage('drawing');
-    }, 100);
+      worker.terminate();
+    };
   }, [moduleDeps, filters]);
 
   useEffect(() => {
