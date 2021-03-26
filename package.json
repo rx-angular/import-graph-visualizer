@@ -8,7 +8,8 @@
     "build": "npm run build:app && npm run build:cli",
     "build:app": "webpack --mode production",
     "build:cli": "tsc src/cli/index.ts --outDir dist/cli",
-    "cli": "npm run build:cli && node dist/cli/index.js"
+    "cli": "npm run build:cli && node dist/cli/index.js",
+    "fetch-icons": "ts-node scripts/fetch-icons.ts"
   },
   "repository": {
     "type": "git",
@@ -21,12 +22,17 @@
   },
   "homepage": "https://github.com/flowup/import-graph-visualizer#readme",
   "devDependencies": {
+    "@types/fs-extra": "^9.0.9",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.2",
     "@types/react-router-dom": "^5.1.7",
     "@types/yargs": "^16.0.0",
+    "copy-webpack-plugin": "^8.1.0",
+    "fs-extra": "^9.1.0",
     "html-webpack-plugin": "^5.3.1",
+    "simple-git": "^2.37.0",
     "ts-loader": "^8.0.18",
+    "ts-node": "^9.1.1",
     "webpack": "^5.26.0",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2",
