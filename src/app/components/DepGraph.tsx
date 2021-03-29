@@ -3,6 +3,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { Edge, Network, Node } from 'vis-network/standalone';
 import Worker from 'worker-loader!../workers/graph.worker';
 import { filenameFromPath } from '../utils/format';
+import { getIconUrlByName, getIconUrlForPath } from '../utils/icons';
 import { DepGraph, Filters, ModuleDeps } from '../utils/types';
 
 type Props = {
@@ -37,6 +38,7 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
           id: path,
           label: isLocal ? filenameFromPath(path) : path,
           title: path,
+          image: isLocal ? getIconUrlForPath(path) : getIconUrlByName('npm'),
         }),
       );
 
@@ -53,7 +55,8 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
         { edges, nodes },
         {
           nodes: {
-            shape: 'box',
+            shape: 'image',
+            image: getIconUrlByName('file'),
           },
           edges: {
             arrows: 'to',

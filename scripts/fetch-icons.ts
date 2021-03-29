@@ -21,11 +21,11 @@ async function fetchIcons(): Promise<void> {
     'git@github.com:PKief/vscode-material-icon-theme.git',
     vsCodeExtDirName,
   );
-  await fse.copy(resolve(vsCodeExtDirPath, 'icons'), iconsDirPath);
   execSync('npm install', {
     cwd: vsCodeExtDirPath,
     stdio: 'inherit',
   });
+  await fse.copy(resolve(vsCodeExtDirPath, 'icons'), iconsDirPath);
   execSync('npm run build', {
     cwd: vsCodeExtDirPath,
     stdio: 'inherit',

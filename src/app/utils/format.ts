@@ -4,5 +4,5 @@ export function filenameFromPath(path: string): string {
 }
 
 export function dirnameFromPath(path: string): string {
-  return path.replace(/\/[^/]$/, '/');
+  return path.replace(/\/[^/]+$/, '/');
 }

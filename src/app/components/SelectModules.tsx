@@ -1,4 +1,4 @@
-import { TextField } from '@material-ui/core';
+import { Grid, Icon, TextField, Typography } from '@material-ui/core';
 import {
   Autocomplete,
   AutocompleteRenderInputParams,
@@ -6,6 +6,8 @@ import {
 } from '@material-ui/lab';
 import { matchSorter } from 'match-sorter';
 import React, { ChangeEvent, FC } from 'react';
+import { dirnameFromPath, filenameFromPath } from '../utils/format';
+import { getIconUrlForPath } from '../utils/icons';
 import { Module } from '../utils/types';
 
 type Props = {
@@ -27,6 +29,26 @@ const SelectModules: FC<Props> = ({ modules, label, value, onChange }) => {
   const renderInput = (params: AutocompleteRenderInputParams) => (
     <TextField {...params} label={label} variant="outlined" />
   );
+  const renderOption = (option: Module) => (
+    <Grid container spacing={2} alignItems="center">
+      <Grid item>
+        <Icon fontSize="small" style={{ textAlign: 'center' }}>
+          <img
+            src={getIconUrlForPath(option.path)}
+            style={{ display: 'flex', height: 'inherit', width: 'inherit' }}
+          />
+        </Icon>
+      </Grid>
+      <Grid item>
+        <Typography variant="subtitle1">
+          {filenameFromPath(option.path)}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="body2">{dirnameFromPath(option.path)}</Typography>
+      </Grid>
+    </Grid>
+  );
   const handleChange = (_: ChangeEvent<{}>, value: Module[]) => {
     onChange?.(value);
   };
@@ -40,6 +62,7 @@ const SelectModules: FC<Props> = ({ modules, label, value, onChange }) => {
       value={value}
       getOptionLabel={getOptionLabel}
       renderInput={renderInput}
+      renderOption={renderOption}
       filterOptions={filterOptions}
       onChange={handleChange}
       getOptionSelected={areModulesEqual}
