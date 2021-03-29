@@ -18,7 +18,7 @@ For local development, clone this repo and first install dependencies with:
 npm install
 ```
 
-Then pick a project for testing and generate it's dependencies using the CLI:
+Then pick a project for testing and generate its dependencies using the CLI:
 
 ```sh
 npm run cli -- --entry-points path/to/entry/module --ts-config path/to/tsconfig/file

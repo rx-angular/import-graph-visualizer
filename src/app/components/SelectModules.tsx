@@ -7,7 +7,7 @@ import {
 import { matchSorter } from 'match-sorter';
 import React, { ChangeEvent, FC } from 'react';
 import { dirnameFromPath, filenameFromPath } from '../utils/format';
-import { getIconUrlForPath } from '../utils/icons';
+import { getIconUrlByName, getIconUrlForPath } from '../utils/icons';
 import { Module } from '../utils/types';
 
 type Props = {
@@ -34,19 +34,35 @@ const SelectModules: FC<Props> = ({ modules, label, value, onChange }) => {
       <Grid item>
         <Icon fontSize="small" style={{ textAlign: 'center' }}>
           <img
-            src={getIconUrlForPath(option.path)}
+            src={
+              option.isLocal
+                ? getIconUrlForPath(option.path)
+                : getIconUrlByName('npm')
+            }
             style={{ display: 'flex', height: 'inherit', width: 'inherit' }}
           />
         </Icon>
       </Grid>
-      <Grid item>
-        <Typography variant="subtitle1">
-          {filenameFromPath(option.path)}
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Typography variant="body2">{dirnameFromPath(option.path)}</Typography>
-      </Grid>
+      {option.isLocal ? (
+        <>
+          <Grid item>
+            <Typography variant="subtitle1">
+              {filenameFromPath(option.path)}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="body2">
+              {dirnameFromPath(option.path)}
+            </Typography>
+          </Grid>
+        </>
+      ) : (
+        <Grid item>
+          <Typography variant="subtitle1" style={{ opacity: 0.7 }}>
+            {option.path}
+          </Typography>
+        </Grid>
+      )}
     </Grid>
   );
   const handleChange = (_: ChangeEvent<{}>, value: Module[]) => {
