@@ -4,6 +4,11 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/app/index.tsx',
+  externals: {
+    fs: 'empty',
+    path: 'empty',
+    crypto: 'empty',
+  },
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist/app'),
@@ -20,6 +25,14 @@ module.exports = {
       {
         test: /\.worker\.js/,
         use: { loader: 'worker-loader' },
+      },
+      {
+        test: /\.wasm$/,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
       },
     ],
   },

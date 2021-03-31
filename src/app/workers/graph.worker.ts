@@ -1,25 +1,36 @@
-import { DepGraph, ModuleDeps } from '../utils/types';
+import { loadWebAssemblyModule, WebAssemblyModule } from '../../wasm';
+import { DepGraph, GraphWorkerArgs } from '../utils/types';
 
 const ctx: Worker = self as any;
 
-type Args = {
-  moduleDeps: ModuleDeps;
-  sourceModules: string[];
-  targetModules: string[];
+const wasmPromise = loadWebAssemblyModule();
+
+type DepGraphArgs = GraphWorkerArgs & {
+  findAllPaths: WebAssemblyModule['findAllPaths'];
 };
 
-ctx.addEventListener('message', (ev: MessageEvent<Args>) => {
-  ctx.postMessage(createDepGraph(ev.data));
+ctx.addEventListener('message', async (ev: MessageEvent<GraphWorkerArgs>) => {
+  const wasm = await wasmPromise;
+  ctx.postMessage(
+    createDepGraph({ ...ev.data, findAllPaths: wasm.findAllPaths }),
+  );
 });
 
-function createDepGraph(args: Args): DepGraph {
-  const { moduleDeps, sourceModules, targetModules } = args;
+function createDepGraph(args: DepGraphArgs): DepGraph {
+  const { moduleDeps, sourceModules, targetModules, findAllPaths } = args;
 
-  const paths = findAllPaths(
-    targetModules,
-    sourceModules,
-    module => moduleDeps.importedBy[module]?.map(({ path }) => path) ?? [],
-  );
+  const paths = findAllPaths({
+    sources: targetModules,
+    targets: sourceModules,
+    adjacent: Object.keys(moduleDeps.modules).reduce(
+      (acc, modulePath) => ({
+        ...acc,
+        [modulePath]:
+          moduleDeps.importedBy[modulePath]?.map(({ path }) => path) ?? [],
+      }),
+      {} as Record<string, string[]>,
+    ),
+  });
 
   const relevantModules = new Set<string>();
   paths.forEach(path => {
@@ -46,43 +57,4 @@ function createDepGraph(args: Args): DepGraph {
       [],
     ),
   };
-}
-
-function findAllPaths<T>(from: T[], to: T[], adjacent: (vertex: T) => T[]) {
-  const ends = new Set(to);
-  const isPathEnd = (vertex: T) => ends.has(vertex);
-
-  const paths: T[][] = [];
-  for (const vertex of from) {
-    const visited = new Set<T>();
-    const path: T[] = [];
-    findAllPathsUtil(vertex, isPathEnd, adjacent, visited, path, paths);
-  }
-
-  return paths;
-}
-
-function findAllPathsUtil<T>(
-  vertex: T,
-  isPathEnd: (vertex: T) => boolean,
-  adjacent: (vertex: T) => T[],
-  visited: Set<T>,
-  path: T[],
-  paths: T[][],
-) {
-  visited.add(vertex);
-  path.push(vertex);
-
-  if (isPathEnd(vertex)) {
-    paths.push([...path]);
-  } else {
-    for (const other of adjacent(vertex)) {
-      if (!visited.has(other)) {
-        findAllPathsUtil(other, isPathEnd, adjacent, visited, path, paths);
-      }
-    }
-  }
-
-  visited.delete(vertex);
-  path.pop();
 }

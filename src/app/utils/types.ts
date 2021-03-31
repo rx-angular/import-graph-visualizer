@@ -30,3 +30,9 @@ export type Filters = {
   targetModules: string[];
   sourceModules: string[];
 };
+
+export type GraphWorkerArgs = {
+  moduleDeps: ModuleDeps;
+  sourceModules: string[];
+  targetModules: string[];
+};

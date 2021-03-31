@@ -8,6 +8,7 @@
     "build": "npm run build:app && npm run build:cli",
     "build:app": "webpack --mode production",
     "build:cli": "tsc src/cli/index.ts --outDir dist/cli",
+    "build:wasm": "em++ src/wasm/cpp/graph.cpp -s MODULARIZE -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=_findAllPaths,_malloc,_free -s EXTRA_EXPORTED_RUNTIME_METHODS=cwrap,stringToUTF8,lengthBytesUTF8 -O3 -o src/wasm/generated/graph.js",
     "cli": "npm run build:cli && node dist/cli/index.js",
     "fetch-icons": "ts-node scripts/fetch-icons.ts"
   },
@@ -22,12 +23,14 @@
   },
   "homepage": "https://github.com/flowup/import-graph-visualizer#readme",
   "devDependencies": {
+    "@types/emscripten": "^1.39.4",
     "@types/fs-extra": "^9.0.9",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.2",
     "@types/react-router-dom": "^5.1.7",
     "@types/yargs": "^16.0.0",
     "copy-webpack-plugin": "^8.1.0",
+    "file-loader": "^6.2.0",
     "fs-extra": "^9.1.0",
     "html-webpack-plugin": "^5.3.1",
     "simple-git": "^2.37.0",
