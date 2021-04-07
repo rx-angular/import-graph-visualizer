@@ -1,4 +1,4 @@
-import { Snackbar, SnackbarContent } from '@material-ui/core';
+import { Button, Snackbar, SnackbarContent } from '@material-ui/core';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Edge, Network, Node } from 'vis-network/standalone';
 import Worker from 'worker-loader!../workers/graph.worker';
@@ -18,17 +18,23 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
 
   const [graph, setGraph] = useState<DepGraph>();
 
+  const [worker, setWorker] = useState<Worker>();
+
   const [stage, setStage] = useState<Stage>('idle');
 
   useEffect(() => {
     setStage('computing');
-    const worker = new Worker();
-    worker.postMessage({ moduleDeps, ...filters });
-    worker.onmessage = ({ data }: MessageEvent<DepGraph>) => {
+    if (worker != null) {
+      worker.terminate();
+    }
+    const newWorker = new Worker();
+    newWorker.postMessage({ moduleDeps, ...filters });
+    newWorker.onmessage = ({ data }: MessageEvent<DepGraph>) => {
       setGraph(data);
       setStage('drawing');
-      worker.terminate();
+      newWorker.terminate();
     };
+    setWorker(newWorker);
   }, [moduleDeps, filters]);
 
   useEffect(() => {
@@ -70,6 +76,14 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
     }
   }, [containerRef.current, graph]);
 
+  const handleTerminate = () => {
+    if (worker != null) {
+      worker.terminate();
+      setWorker(undefined);
+      setStage('idle');
+    }
+  };
+
   return (
     <>
       <div
@@ -83,7 +97,14 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
         }}
       ></div>
       <Snackbar open={stage === 'computing'}>
-        <SnackbarContent message="Calculating all import paths between target and source modules..." />
+        <SnackbarContent
+          message="Calculating all import paths between target and source modules..."
+          action={
+            <Button color="secondary" onClick={handleTerminate}>
+              Terminate
+            </Button>
+          }
+        />
       </Snackbar>
       <Snackbar open={stage === 'drawing'}>
         <SnackbarContent message="Drawing import graph to canvas..." />
