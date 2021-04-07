@@ -26,6 +26,7 @@
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.2",
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-window": "^1.8.2",
     "@types/yargs": "^16.0.0",
     "copy-webpack-plugin": "^8.1.0",
     "fs-extra": "^9.1.0",
@@ -47,6 +48,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
+    "react-window": "^1.8.6",
     "typescript": "^4.2.3",
     "vis-network": "^9.0.4",
     "yargs": "^16.2.0"
