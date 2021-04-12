@@ -1,5 +1,6 @@
 import { cruise, ICruiseOptions } from 'dependency-cruiser';
 import fs from 'fs';
+import ora from 'ora';
 import path from 'path';
 import typescript from 'typescript';
 import yargs from 'yargs';
@@ -48,6 +49,7 @@ export function createReporterOutput(): void {
     tsPreCompilationDeps: true,
   };
 
+  const cruiseSpinner = ora('Analyzing project imports').start();
   const { output } = cruise(
     entryPoints,
     {
@@ -58,9 +60,12 @@ export function createReporterOutput(): void {
     null,
     tsConfig,
   );
+  cruiseSpinner.succeed('Analyzed project imports');
 
+  const fsSpinner = ora('Creating dependency graph').start();
   fs.writeFileSync(
     path.resolve(__dirname, 'reporter-output.json'),
     JSON.stringify(output),
   );
+  fsSpinner.succeed('Created dependency graph');
 }

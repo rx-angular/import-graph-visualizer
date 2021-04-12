@@ -48,6 +48,8 @@
     "dependency-cruiser": "^9.23.3",
     "express": "^4.17.1",
     "match-sorter": "^6.3.0",
+    "open": "^8.0.5",
+    "ora": "^5.4.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
