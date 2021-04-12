@@ -62,10 +62,22 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
         {
           nodes: {
             shape: 'image',
+            shapeProperties: {
+              useBorderWithImage: true,
+            },
             image: getIconUrlByName('file'),
+            color: {
+              border: '#888',
+              background: '#fff',
+              highlight: {
+                border: '#888',
+                background: '#eee',
+              },
+            },
           },
           edges: {
             arrows: 'to',
+            color: '#888',
           },
         },
       );
