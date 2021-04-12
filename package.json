@@ -2,13 +2,14 @@
   "name": "import-graph-visualizer",
   "version": "1.0.0",
   "description": "",
+  "bin": "dist/cli/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open --hot --mode development",
     "build": "npm run build:app && npm run build:cli",
     "build:app": "webpack --mode production",
-    "build:cli": "tsc src/cli/index.ts --outDir dist/cli",
-    "cli": "npm run build:cli && node dist/cli/index.js",
+    "build:cli": "tsc src/cli/main.ts --strict --esModuleInterop --outDir dist/cli",
+    "reporter": "npm run build:cli && node dist/cli/reporter.js",
     "fetch-icons": "ts-node scripts/fetch-icons.ts"
   },
   "repository": {
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/flowup/import-graph-visualizer#readme",
   "devDependencies": {
+    "@types/express": "^4.17.11",
     "@types/fs-extra": "^9.0.9",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.2",
@@ -44,6 +46,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "dependency-cruiser": "^9.23.3",
+    "express": "^4.17.1",
     "match-sorter": "^6.3.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

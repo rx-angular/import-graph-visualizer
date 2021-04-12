@@ -8,7 +8,7 @@ import DepGraph from './DepGraph';
 
 const JSON_URL =
   process.env.NODE_ENV === 'production'
-    ? '../cli/reporter-output.json'
+    ? '/assets/reporter-output.json'
     : '../../../dist/cli/reporter-output.json';
 
 const App: FC = () => {
