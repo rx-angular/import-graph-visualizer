@@ -1,7 +1,7 @@
 import { cruise, ICruiseOptions } from 'dependency-cruiser';
-import * as typescript from 'typescript';
-import * as path from 'path';
 import * as fs from 'fs';
+import * as path from 'path';
+import * as typescript from 'typescript';
 import * as yargs from 'yargs';
 
 const args = yargs
@@ -13,20 +13,24 @@ const args = yargs
   })
   .option('ts-config', {
     alias: 't',
-    demandOption: true,
+    demandOption: false,
     string: true,
   }).argv;
 
 const entryPoints = args['entry-points'];
 const tsConfigFileName = args['ts-config'];
 
-const tsConfig = typescript.parseJsonConfigFileContent(
-  typescript.readConfigFile(tsConfigFileName, typescript.sys.readFile).config,
-  typescript.sys,
-  path.dirname(tsConfigFileName),
-  {},
-  tsConfigFileName,
-);
+const tsConfig =
+  tsConfigFileName == null
+    ? null
+    : typescript.parseJsonConfigFileContent(
+        typescript.readConfigFile(tsConfigFileName, typescript.sys.readFile)
+          .config,
+        typescript.sys,
+        path.dirname(tsConfigFileName),
+        {},
+        tsConfigFileName,
+      );
 
 const options: ICruiseOptions = {
   doNotFollow: {
