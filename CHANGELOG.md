@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/rx-angular/import-graph-visualizer/compare/v0.1.0...v0.1.1) (2021-04-13)
+
+
+### Bug Fixes
+
+* update installation docs in README ([890f0a9](https://github.com/rx-angular/import-graph-visualizer/commit/890f0a9e946fa362c43b9fbba6861b27130a9c43))
+
 ## 0.1.0 (2021-04-13)
 
 
