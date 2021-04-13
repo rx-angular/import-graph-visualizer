@@ -7,8 +7,7 @@
   },
   "bin": "dist/cli/main.js",
   "files": [
-    "dist",
-    "docs"
+    "dist"
   ],
   "scripts": {
     "prepublishOnly": "npm run build",
@@ -19,7 +18,8 @@
     "build:cli": "tsc src/cli/main.ts --strict --esModuleInterop --outDir dist/cli",
     "reporter": "npm run build:cli && node dist/cli/reporter.js",
     "fetch-icons": "ts-node scripts/fetch-icons.ts",
-    "release": "standard-version"
+    "release": "standard-version",
+    "release:dry-run": "standard-version --dry-run"
   },
   "repository": {
     "type": "git",

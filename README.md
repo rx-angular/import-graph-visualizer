@@ -11,28 +11,28 @@ This is why Import Graph Visualizer allows filtering import paths by source and 
 
 Screenshot of Import Graph Visualizer for this repository:
 
-![self example](./docs/images/self-example.png)
+![self example](https://raw.githubusercontent.com/rx-angular/import-graph-visualizer/main/docs/images/self-example.png)
 
 For an Ionic/Angular starter project:
 
-![Ionic/Angular example](./docs/images/ionic-angular-example.png)
+![Ionic/Angular example](https://raw.githubusercontent.com/rx-angular/import-graph-visualizer/main/docs/images/ionic-angular-example.png)
 
 For `vis-network` repo:
 
-![vis-network example](./docs/images/vis-network-example.png)
+![vis-network example](https://raw.githubusercontent.com/rx-angular/import-graph-visualizer/main/docs/images/vis-network-example.png)
 
 ## Setup
 
 To install as a development dependency in your Node project:
 
 ```sh
-npm install --save-dev import-graph-visualizer
+npm install --save-dev @rx-angular/import-graph-visualizer --registry=https://npm.pkg.github.com/rx-angular
 ```
 
 Alternatively, to install as a global dependency (prefix with `sudo` on Unix systems):
 
 ```sh
-npm install --global import-graph-visualizer
+npm install --global @rx-angular/import-graph-visualizer --registry=https://npm.pkg.github.com/rx-angular
 ```
 
 ## Usage
