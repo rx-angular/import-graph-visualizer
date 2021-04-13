@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "",
   "bin": "dist/cli/main.js",
+  "files": [
+    "dist",
+    "docs"
+  ],
   "scripts": {
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
