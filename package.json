@@ -1,27 +1,29 @@
 {
   "name": "import-graph-visualizer",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "bin": "dist/cli/main.js",
   "scripts": {
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open --hot --mode development",
     "build": "npm run build:app && npm run build:cli",
     "build:app": "webpack --mode production",
     "build:cli": "tsc src/cli/main.ts --strict --esModuleInterop --outDir dist/cli",
     "reporter": "npm run build:cli && node dist/cli/reporter.js",
-    "fetch-icons": "ts-node scripts/fetch-icons.ts"
+    "fetch-icons": "ts-node scripts/fetch-icons.ts",
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/flowup/import-graph-visualizer.git"
+    "url": "git+https://github.com/rx-angular/import-graph-visualizer.git"
   },
   "author": "Matěj Chalk <matej.chalk@flowup.cz>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/flowup/import-graph-visualizer/issues"
+    "url": "https://github.com/rx-angular/import-graph-visualizer/issues"
   },
-  "homepage": "https://github.com/flowup/import-graph-visualizer#readme",
+  "homepage": "https://github.com/rx-angular/import-graph-visualizer#readme",
   "devDependencies": {
     "@types/express": "^4.17.11",
     "@types/fs-extra": "^9.0.9",
@@ -34,6 +36,7 @@
     "fs-extra": "^9.1.0",
     "html-webpack-plugin": "^5.3.1",
     "simple-git": "^2.37.0",
+    "standard-version": "^9.2.0",
     "ts-loader": "^8.0.18",
     "ts-node": "^9.1.1",
     "webpack": "^5.26.0",
