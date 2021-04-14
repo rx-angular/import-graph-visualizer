@@ -1,6 +1,6 @@
 {
   "name": "@rx-angular/import-graph-visualizer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A development tool for filtering and visualizing import paths within a JavaScript/TypeScript application",
   "bin": "dist/cli/main.js",
   "files": [

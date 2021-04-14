@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/rx-angular/import-graph-visualizer/compare/v0.1.1...v0.1.2) (2021-04-14)
+
+
+### Bug Fixes
+
+* enable publishing to npmjs.com ([156c10c](https://github.com/rx-angular/import-graph-visualizer/commit/156c10ccb7ff48e4e0d269c5c15ed5cb948ca743))
+
 ### [0.1.1](https://github.com/rx-angular/import-graph-visualizer/compare/v0.1.0...v0.1.1) (2021-04-13)
 
 
