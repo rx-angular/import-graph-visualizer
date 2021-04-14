@@ -1,4 +1,4 @@
-name: Publish to GitHub Package Registry
+name: Publish to NPM and GitHub Packages
 
 on:
   push:
@@ -6,7 +6,24 @@ on:
       - v*
 
 jobs:
-  publish:
+  publish_to_npm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js and NPM
+        uses: actions/setup-node@v2
+        with:
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@rx-angular'
+      - name: Install dependencies
+        run: npm ci
+      - name: Publish to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish_to_gpr:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
