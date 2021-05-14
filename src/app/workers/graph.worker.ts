@@ -15,6 +15,40 @@ ctx.addEventListener('message', (ev: MessageEvent<Args>) => {
 function createDepGraph(args: Args): DepGraph {
   const { moduleDeps, sourceModules, targetModules } = args;
 
+  if (sourceModules.length === 0) {
+    const { vertices, edges } = bfs(
+      targetModules,
+      module => moduleDeps.importedBy[module]?.map(({ path }) => path) ?? [],
+    );
+    return {
+      modules: vertices.map(module => moduleDeps.modules[module]),
+      imports: edges.map(({ from, to }) => ({
+        fromPath: from,
+        toPath: to,
+        isDynamic:
+          moduleDeps.importedBy[from].find(({ path }) => path === to)
+            ?.isDynamic ?? false,
+      })),
+    };
+  }
+
+  if (targetModules.length === 0) {
+    const { vertices, edges } = bfs(
+      sourceModules,
+      module => moduleDeps.deps[module]?.map(({ path }) => path) ?? [],
+    );
+    return {
+      modules: vertices.map(module => moduleDeps.modules[module]),
+      imports: edges.map(({ from, to }) => ({
+        fromPath: from,
+        toPath: to,
+        isDynamic:
+          moduleDeps.deps[from].find(({ path }) => path === to)?.isDynamic ??
+          false,
+      })),
+    };
+  }
+
   const paths = findAllPaths(
     targetModules,
     sourceModules,
@@ -48,7 +82,36 @@ function createDepGraph(args: Args): DepGraph {
   };
 }
 
-function findAllPaths<T>(from: T[], to: T[], adjacent: (vertex: T) => T[]) {
+function bfs<T>(
+  from: T[],
+  adjacent: (vertex: T) => T[],
+): {
+  vertices: T[];
+  edges: { from: T; to: T }[];
+} {
+  const queue = from;
+  const discovered = new Set(from);
+  const vertices: T[] = [];
+  const edges: { from: T; to: T }[] = [];
+  while (queue.length > 0) {
+    const vertex = queue.shift()!;
+    vertices.push(vertex);
+    for (const other of adjacent(vertex)) {
+      edges.push({ from: vertex, to: other });
+      if (!discovered.has(other)) {
+        queue.push(other);
+        discovered.add(other);
+      }
+    }
+  }
+  return { vertices, edges };
+}
+
+function findAllPaths<T>(
+  from: T[],
+  to: T[],
+  adjacent: (vertex: T) => T[],
+): T[][] {
   const ends = new Set(to);
   const isPathEnd = (vertex: T) => ends.has(vertex);
 
@@ -69,7 +132,7 @@ function findAllPathsUtil<T>(
   visited: Set<T>,
   path: T[],
   paths: T[][],
-) {
+): void {
   visited.add(vertex);
   path.push(vertex);
 

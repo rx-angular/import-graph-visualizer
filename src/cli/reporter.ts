@@ -69,3 +69,7 @@ export function createReporterOutput(): void {
   );
   fsSpinner.succeed('Created dependency graph');
 }
+
+if (require.main === module) {
+  createReporterOutput();
+}
