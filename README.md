@@ -26,13 +26,13 @@ For `vis-network` repo:
 To install as a development dependency in your Node project:
 
 ```sh
-npm install --save-dev @rx-angular/import-graph-visualizer --registry=https://npm.pkg.github.com/rx-angular
+npm install --save-dev @rx-angular/import-graph-visualizer
 ```
 
 Alternatively, to install as a global dependency (prefix with `sudo` on Unix systems):
 
 ```sh
-npm install --global @rx-angular/import-graph-visualizer --registry=https://npm.pkg.github.com/rx-angular
+npm install --global @rx-angular/import-graph-visualizer
 ```
 
 ## Usage
