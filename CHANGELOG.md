@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/rx-angular/import-graph-visualizer/compare/v0.1.2...v0.2.0) (2021-05-14)
+
+
+### Features
+
+* **app:** create graph using BFS if source or target missing ([91af9d9](https://github.com/rx-angular/import-graph-visualizer/commit/91af9d95542a11bf55189c3c54f0cabbc7c5375f))
+
 ### [0.1.2](https://github.com/rx-angular/import-graph-visualizer/compare/v0.1.1...v0.1.2) (2021-04-14)
 
 
