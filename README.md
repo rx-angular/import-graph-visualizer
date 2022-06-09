@@ -40,13 +40,13 @@ npm install --global @rx-angular/import-graph-visualizer
 To run this tool, you must supply at least one entry point for your application (e.g. `src/index.js`):
 
 ```sh
-npx import-graph-visualizer --entry-points path/to/entry/module
+npx @rx-angular/import-graph-visualizer --entry-points path/to/entry/module
 ```
 
 For Typescript projects that use path aliases, make sure to also specify your `tsconfig.json` path:
 
 ```sh
-npx import-graph-visualizer --entry-points path/to/entry/module --ts-config path/to/tsconfig
+npx @rx-angular/import-graph-visualizer --entry-points path/to/entry/module --ts-config path/to/tsconfig
 ```
 
 For greater convenience, you may wish to add a script to your `package.json`:
