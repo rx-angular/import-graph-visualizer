@@ -92,3 +92,7 @@ If you need to update icons and mappings from [VSCode Material Icon Theme](https
 ```sh
 npm run fetch-icons
 ```
+
+---
+
+made with ❤ by [push-based.io](https://www.push-based.io)
