@@ -3337,6 +3337,7 @@
     "sql": "database",
     "pks": "database",
     "pkb": "database",
+    "prql": "database",
     "accdb": "database",
     "mdb": "database",
     "sqlite": "database",
