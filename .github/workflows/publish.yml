@@ -16,7 +16,7 @@ jobs:
         with:
           registry-url: 'https://registry.npmjs.org'
           scope: '@rx-angular'
-          node-version-file: .tool-versions
+          node-version-file: .nvmrc
       - name: Install dependencies
         run: npm ci
       - name: Publish to NPM
@@ -34,7 +34,7 @@ jobs:
         with:
           registry-url: 'https://npm.pkg.github.com'
           scope: '@rx-angular'
-          node-version-file: .tool-versions
+          node-version-file: .nvmrc
       - name: Install dependencies
         run: npm ci
       - name: Publish to GPR
