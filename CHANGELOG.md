@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/rx-angular/import-graph-visualizer/compare/v0.2.0...v0.2.1) (2024-02-10)
+
+
+### Features
+
+* **app:** update material icons from VSCode extension ([e8b3d62](https://github.com/rx-angular/import-graph-visualizer/commit/e8b3d623df720fd33f32304c250067e6f49015ff))
+
 ## [0.2.0](https://github.com/rx-angular/import-graph-visualizer/compare/v0.1.2...v0.2.0) (2021-05-14)
 
 
