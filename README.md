@@ -1,5 +1,8 @@
 # Import Graph Visualizer
 
+[![npm version](https://img.shields.io/npm/v/@rx-angular/import-graph-visualizer.svg)](https://www.npmjs.com/package/@rx-angular/import-graph-visualizer)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **Import Graph Visualizer is a development tool for filtering and visualizing import paths within a JavaScript/TypeScript application.**
 
 ## Motivation
@@ -51,7 +54,7 @@ npx @rx-angular/import-graph-visualizer --entry-points path/to/entry/module --ts
 
 For greater convenience, you may wish to add a script to your `package.json`:
 
-```json
+```jsonc
 {
   // ...
   "scripts": {
@@ -90,5 +93,5 @@ npm start
 If you need to update icons and mappings from [VSCode Material Icon Theme](https://github.com/PKief/vscode-material-icon-theme), run:
 
 ```sh
-npm i vscode-material-icons@latest
+npm install --save-dev vscode-material-icons@latest
 ```
