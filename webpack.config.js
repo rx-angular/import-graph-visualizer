@@ -33,7 +33,12 @@ module.exports = {
       inject: 'body',
     }),
     new CopyPlugin({
-      patterns: [{ from: 'src/app/generated/icons', to: 'assets/icons' }],
+      patterns: [
+        {
+          from: 'node_modules/vscode-material-icons/generated/icons',
+          to: 'assets/icons',
+        },
+      ],
     }),
   ],
 };

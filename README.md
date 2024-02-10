@@ -90,5 +90,5 @@ npm start
 If you need to update icons and mappings from [VSCode Material Icon Theme](https://github.com/PKief/vscode-material-icon-theme), run:
 
 ```sh
-npm run fetch-icons
+npm i vscode-material-icons@latest
 ```

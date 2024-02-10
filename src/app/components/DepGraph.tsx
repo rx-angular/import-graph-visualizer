@@ -1,9 +1,10 @@
 import { Button, Snackbar, SnackbarContent } from '@material-ui/core';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Edge, Network, Node } from 'vis-network/standalone';
+import { getIconUrlByName, getIconUrlForFilePath } from 'vscode-material-icons';
 import Worker from 'worker-loader!../workers/graph.worker';
 import { filenameFromPath } from '../utils/format';
-import { getIconUrlByName, getIconUrlForPath } from '../utils/icons';
+import { ICONS_URL } from '../utils/icons';
 import { DepGraph, Filters, ModuleDeps } from '../utils/types';
 
 type Props = {
@@ -44,7 +45,9 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
           id: path,
           label: isLocal ? filenameFromPath(path) : path,
           title: path,
-          image: isLocal ? getIconUrlForPath(path) : getIconUrlByName('npm'),
+          image: isLocal
+            ? getIconUrlForFilePath(path, ICONS_URL)
+            : getIconUrlByName('npm', ICONS_URL),
         }),
       );
 
@@ -65,7 +68,7 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
             shapeProperties: {
               useBorderWithImage: true,
             },
-            image: getIconUrlByName('file'),
+            image: getIconUrlByName('file', ICONS_URL),
             color: {
               border: '#888',
               background: '#fff',

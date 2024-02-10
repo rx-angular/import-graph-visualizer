@@ -25,8 +25,9 @@ import React, {
   useContext,
 } from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import { getIconUrlByName, getIconUrlForFilePath } from 'vscode-material-icons';
 import { dirnameFromPath, filenameFromPath } from '../utils/format';
-import { getIconUrlByName, getIconUrlForPath } from '../utils/icons';
+import { ICONS_URL } from '../utils/icons';
 import { Module } from '../utils/types';
 
 type Props = {
@@ -90,8 +91,8 @@ const ListboxComponent = forwardRef<HTMLDivElement>(function ListboxComponent(
 
 function renderOption(option: Module) {
   const iconSrc = option.isLocal
-    ? getIconUrlForPath(option.path)
-    : getIconUrlByName('npm');
+    ? getIconUrlForFilePath(option.path, ICONS_URL)
+    : getIconUrlByName('npm', ICONS_URL);
   const filename = filenameFromPath(option.path);
   const dirname = dirnameFromPath(option.path);
   const dirnameMaxWidth = filename.length > 35 ? 300 : 500;
