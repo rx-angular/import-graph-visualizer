@@ -95,3 +95,7 @@ If you need to update icons and mappings from [VSCode Material Icon Theme](https
 ```sh
 npm install --save-dev vscode-material-icons@latest
 ```
+
+---
+
+made with ❤ by [push-based.io](https://www.push-based.io)
