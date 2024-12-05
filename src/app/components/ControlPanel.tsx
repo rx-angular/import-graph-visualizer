@@ -16,9 +16,17 @@ type Props = {
   moduleDeps: ModuleDeps;
   filters: Filters;
   onSubmit?: (filters: Filters) => void;
+  physicsSimulation: boolean;
+  setPhysicsSimulation: (enable: boolean) => void;
 };
 
-const ControlPanel: FC<Props> = ({ moduleDeps, filters, onSubmit }) => {
+const ControlPanel: FC<Props> = ({
+  moduleDeps,
+  filters,
+  onSubmit,
+  physicsSimulation,
+  setPhysicsSimulation,
+}) => {
   const modules = useMemo(() => getModules(moduleDeps), [moduleDeps]);
 
   const [targetModules, setTargetModules] = useState<string[]>(
@@ -80,6 +88,13 @@ const ControlPanel: FC<Props> = ({ moduleDeps, filters, onSubmit }) => {
           <Grid item>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
               Render
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => setPhysicsSimulation(!physicsSimulation)}
+            >
+              {physicsSimulation ? 'Stop' : 'Start'} physics simulation
             </Button>
           </Grid>
         </Grid>

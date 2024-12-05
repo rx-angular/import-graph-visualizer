@@ -13,6 +13,7 @@ const JSON_URL =
 
 const App: FC = () => {
   const [data, setData] = useState<ICruiseResult>();
+  const [physicsSimulation, setPhysicsSimulation] = useState(true);
 
   const moduleDeps = useMemo(() => data && parseModuleDeps(data), [data]);
 
@@ -36,8 +37,14 @@ const App: FC = () => {
         moduleDeps={moduleDeps}
         filters={filters}
         onSubmit={setFilters}
+        physicsSimulation={physicsSimulation}
+        setPhysicsSimulation={setPhysicsSimulation}
       />
-      <DepGraph moduleDeps={moduleDeps} filters={filters} />
+      <DepGraph
+        moduleDeps={moduleDeps}
+        filters={filters}
+        physicsSimulation={physicsSimulation}
+      />
     </>
   );
 };

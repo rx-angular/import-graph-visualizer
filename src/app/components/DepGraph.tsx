@@ -10,11 +10,12 @@ import { DepGraph, Filters, ModuleDeps } from '../utils/types';
 type Props = {
   moduleDeps: ModuleDeps;
   filters: Filters;
+  physicsSimulation: boolean;
 };
 
 type Stage = 'idle' | 'computing' | 'drawing';
 
-const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
+const DepGraph: FC<Props> = ({ moduleDeps, filters, physicsSimulation }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [graph, setGraph] = useState<DepGraph>();
@@ -22,6 +23,7 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
   const [worker, setWorker] = useState<Worker>();
 
   const [stage, setStage] = useState<Stage>('idle');
+  const [network, setNetwork] = useState<Network>();
 
   useEffect(() => {
     setStage('computing');
@@ -59,10 +61,11 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
         }),
       );
 
-      const network = new Network(
+      const newNetwork = new Network(
         containerRef.current,
         { edges, nodes },
         {
+          physics: { enabled: physicsSimulation },
           nodes: {
             shape: 'image',
             shapeProperties: {
@@ -85,11 +88,22 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
         },
       );
 
-      network.on('afterDrawing', () => {
+      newNetwork.on('afterDrawing', () => {
         setStage('idle');
       });
+
+      setNetwork(newNetwork);
     }
   }, [containerRef.current, graph]);
+
+  useEffect(() => {
+    if (physicsSimulation) {
+      network?.startSimulation();
+    } else {
+      network?.stopSimulation();
+    }
+    network?.setOptions({ physics: { enabled: physicsSimulation } });
+  }, [physicsSimulation, network]);
 
   const handleTerminate = () => {
     if (worker != null) {
