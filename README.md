@@ -59,8 +59,8 @@ For greater convenience, you may wish to add a script to your `package.json`:
   // ...
   "scripts": {
     // ...
-    "import-graph-visualizer": "import-graph-visualizer --entry-points path/to/entry/module ..."
-  }
+    "import-graph-visualizer": "import-graph-visualizer --entry-points path/to/entry/module ...",
+  },
 }
 ```
 

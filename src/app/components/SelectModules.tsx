@@ -57,37 +57,36 @@ const OuterElementType = forwardRef<HTMLDivElement>((props, ref) => {
 });
 
 // Adapter for react-window
-const ListboxComponent = forwardRef<HTMLDivElement>(function ListboxComponent(
-  props,
-  ref,
-) {
-  const { children, ...other } = props;
-  const itemData = Children.toArray(children);
-  const theme = useTheme();
-  const smUp = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true });
-  const itemCount = itemData.length;
-  const itemSize = smUp ? 36 : 48;
-  const height = Math.min(itemCount, 8) * itemSize + 2 * LISTBOX_PADDING;
+const ListboxComponent = forwardRef<HTMLDivElement>(
+  function ListboxComponent(props, ref) {
+    const { children, ...other } = props;
+    const itemData = Children.toArray(children);
+    const theme = useTheme();
+    const smUp = useMediaQuery(theme.breakpoints.up('sm'), { noSsr: true });
+    const itemCount = itemData.length;
+    const itemSize = smUp ? 36 : 48;
+    const height = Math.min(itemCount, 8) * itemSize + 2 * LISTBOX_PADDING;
 
-  return (
-    <div ref={ref}>
-      <OuterElementContext.Provider value={other}>
-        <FixedSizeList
-          itemData={itemData}
-          height={height}
-          width="100%"
-          outerElementType={OuterElementType}
-          innerElementType="ul"
-          itemSize={itemSize}
-          overscanCount={5}
-          itemCount={itemCount}
-        >
-          {renderRow}
-        </FixedSizeList>
-      </OuterElementContext.Provider>
-    </div>
-  );
-});
+    return (
+      <div ref={ref}>
+        <OuterElementContext.Provider value={other}>
+          <FixedSizeList
+            itemData={itemData}
+            height={height}
+            width="100%"
+            outerElementType={OuterElementType}
+            innerElementType="ul"
+            itemSize={itemSize}
+            overscanCount={5}
+            itemCount={itemCount}
+          >
+            {renderRow}
+          </FixedSizeList>
+        </OuterElementContext.Provider>
+      </div>
+    );
+  },
+);
 
 function renderOption(option: Module) {
   const iconSrc = option.isLocal

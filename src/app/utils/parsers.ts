@@ -44,19 +44,17 @@ export function parseModuleDeps(result: ICruiseResult): ModuleDeps {
   });
 
   const allModules = result.modules
-    .map(
-      (module): Module => {
-        const npmPackageName = npmPackageNames.get(module.source);
-        const alias = aliases.get(module.source);
-        const isLocal = localModules.has(module.source);
-        return {
-          path: npmPackageName ?? module.source,
-          source: module.source,
-          isLocal,
-          ...(alias && { alias }),
-        };
-      },
-    )
+    .map((module): Module => {
+      const npmPackageName = npmPackageNames.get(module.source);
+      const alias = aliases.get(module.source);
+      const isLocal = localModules.has(module.source);
+      return {
+        path: npmPackageName ?? module.source,
+        source: module.source,
+        isLocal,
+        ...(alias && { alias }),
+      };
+    })
     .filter(
       (item, index, array) =>
         array.findIndex(({ path }) => path === item.path) === index,

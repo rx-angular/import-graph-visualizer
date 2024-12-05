@@ -13,6 +13,7 @@
     "build": "npm run build:app && npm run build:cli",
     "build:app": "webpack --mode production",
     "build:cli": "tsc src/cli/main.ts --strict --esModuleInterop --outDir dist/cli",
+    "format": "prettier .",
     "reporter": "npm run build:cli && node dist/cli/reporter.js",
     "release": "standard-version",
     "release:dry-run": "standard-version --dry-run"
@@ -52,6 +53,7 @@
     "match-sorter": "^6.3.0",
     "open": "^8.0.5",
     "ora": "^5.4.0",
+    "prettier": "^3.4.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
