@@ -3,6 +3,7 @@ export type Module = {
   source: string;
   alias?: string;
   isLocal: boolean;
+  isNodeBuiltIn: boolean;
 };
 
 export type ModuleDeps = {

@@ -41,13 +41,19 @@ const DepGraph: FC<Props> = ({ moduleDeps, filters }) => {
   useEffect(() => {
     if (containerRef.current && graph != null) {
       const nodes = graph.modules.map(
-        ({ path, isLocal }): Node => ({
+        ({ path, isLocal, isNodeBuiltIn }): Node => ({
           id: path,
-          label: isLocal ? filenameFromPath(path) : path,
+          label: isLocal
+            ? filenameFromPath(path)
+            : isNodeBuiltIn
+              ? `node:${path}`
+              : path,
           title: path,
           image: isLocal
             ? getIconUrlForFilePath(path, ICONS_URL)
-            : getIconUrlByName('npm', ICONS_URL),
+            : isNodeBuiltIn
+              ? getIconUrlByName('nodejs', ICONS_URL)
+              : getIconUrlByName('npm', ICONS_URL),
         }),
       );
 
